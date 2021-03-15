@@ -1,0 +1,9 @@
+[submodule "micropython-microbit-v2"]
+	path = micropython-microbit-v2
+	url = https://github.com/yumium/micropython-microbit-v2
+[submodule "PythonEditor"]
+	path = PythonEditor
+	url = https://github.com/yumium/PythonEditor
+[submodule "codal-microbit-v2"]
+	path = codal-microbit-v2
+	url = https://github.com/yumium/codal-microbit-v2
