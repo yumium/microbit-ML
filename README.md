@@ -4,11 +4,17 @@ A proof of concept of teaching ML on the new micro:bit v2
 ### An overview of the directory
 
 ├── **codal-microbit-v2**
+
 ├── **micropython-microbit-v2**
-        ├── lib
-                ├── **codal**
-                ├── **micropython**
+
+​        ├── lib
+
+​                ├── **codal**
+
+​                ├── **micropython**
+
 ├── **PythonEditor**
+
 └── README.md
 
 bold directories are submodules
