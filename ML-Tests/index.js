@@ -25,14 +25,13 @@ for(i = 0; i < N; i++){
 	while(claps < numClaps){
 		// add a clap of correct length
 		nextData = nextData.concat(new Array(Math.floor(Math.random() * (maxClapLength - minClapLength + 1)) + minClapLength).fill(1));
-		claps += 1
+		claps += 1;
 		// add a pause of arbitrary length (leaving enough space for the remaining claps)
 		var maxGapLength = Math.floor((recordingLength - nextData.length - ((numClaps - claps) * (maxClapLength + 1))));
 		nextData = nextData.concat(new Array(Math.floor(Math.random() * maxGapLength) + 1).fill(0));
 	}
 	
 	// console.log(nextData)
-
 	nextData = nextData.slice(0, recordingLength);
 
 	// console.log(nextData)
@@ -62,12 +61,103 @@ function distance(rec1, rec2){
 	return dist
 }
 
+// alternative distance function which measures distances between successive claps and evaluates the  total distance
+// to be the sum of these smaller distances
+// if uneven number of claps, adds the position of each extra clap in recording
+function altDistance(rec1, rec2) {
+
+	var dist = 0;
+	var i = 0;
+	var j = 0;
+
+	var lastClapi = 0;
+	var lastClapj = 0;
+	var findingInitial = true;
+
+	// get positions of initial claps
+	while (i < rec1.length && j < rec2.length && findingInitial) {
+		if (rec1[i] == 0) {
+			i += 1;
+		}
+		else if (rec2[j] == 0) {
+			j += 1;
+		}
+		else {
+			findingInitial = false;
+			lastClapi = i;
+			lastClapj = j;
+			while (i < rec1.length && rec1[i] == 1) {
+				i += 1;
+			}
+			while (j < rec2.length && rec2[j] == 1) {
+				j += 1;
+			}
+		}
+	}
+	// use this to calculate distance
+	while (i < rec1.length && j < rec2.length) {
+		if (rec1[i] == 0) {
+			i += 1
+		}
+		else if (rec2[j] == 0) {
+			j += 1
+		}
+		else {
+			dist += Math.abs((i - lastClapi) - (j - lastClapj));
+			lastClapi = i;
+			lastClapj = j;
+			while (i < rec1.length && rec1[i] == 1) {
+				i += 1;
+			}
+			while (j < rec2.length && rec2[j] == 1) {
+				j += 1;
+			}
+		}
+	}
+
+	// add all the extra claps to distance
+	while (i < rec1.length) {
+		if (rec1[i] == 0) {
+			i += 1
+		}
+		else {
+			dist += i - lastClapi
+			while (i < rec1.length && rec1[i] == 1) {
+				i += 1;
+			}
+		}
+	}
+	while (j < rec2.length) {
+		if (rec2[j] == 0) {
+			j += 1
+		}
+		else {
+			dist += j - lastClapj
+			while (j < rec2.length && rec2[j] == 1) {
+				j += 1;
+			}
+		}
+	}
+
+	return dist
+}
+
+
+
 function update(d, t){
 	var newData = [];
 	
 	for(var i = 0; i < d.length; i++){
 		//console.log(distance(t, d[i][0]))
+		/*
 		if(distance(t, d[i][0]) < 15){
+			newData.push([d[i][0], 1]);
+		}
+		else{
+			newData.push(d[i])
+		}
+		*/
+		if(altDistance(t, d[i][0]) < 15){
 			newData.push([d[i][0], 1]);
 		}
 		else{
@@ -77,6 +167,7 @@ function update(d, t){
 
 	return newData
 }
+
 
 // data = update(data, target);
 console.log(data.map(x => x[0]))
@@ -225,7 +316,9 @@ function listen(predict) {
 					console.log(binResults)
 
 					if(predict){
-						console.log(distance(target, binResults))
+
+						console.log(altDistance(target, binResults))
+						// console.log(distance(target, binResults))
 						const prediction = model.predict(tf.tensor([binResults])).arraySync();
 						console.log(prediction[0][0] > prediction[0][1] ? 0 : 1)
 
