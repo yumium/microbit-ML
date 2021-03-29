@@ -4,9 +4,11 @@ const recordingLength = 70;
 const minClapLength = 2;
 const maxClapLength = 4;
 const maxNumClaps = 10
-const N = 5000;
+const N = 50000;
 
 var data = [];
+
+var correctSeqCount = 0;
 
 // Generate Data
 
@@ -157,7 +159,7 @@ function update(d, t){
 			newData.push(d[i])
 		}
 		*/
-		if(altDistance(t, d[i][0]) < 15){
+		if(altDistance(t, d[i][0]) < 10){
 			newData.push([d[i][0], 1]);
 		}
 		else{
@@ -168,6 +170,26 @@ function update(d, t){
 	return newData
 }
 
+
+// function that removes incorrect (and some correct if necessary) data points until dataset is a certain size
+function reduceDataSize(data) {
+	var newData = data;
+	var index = 0;
+	// remove incorrect data until dataset is 50/50 or at correct size
+	while (newData.length > 2 * correctSeqCount && newData.length > 5000) {
+		index = Math.floor(Math.random() * newData.length)
+		while (newData[index][1] == 1) {
+			index = Math.floor(Math.random() * newData.length)
+		}
+		newData.splice(index, 1)
+	}
+	// remove random data until dataset is at correct size
+	while (newData.length > 5000) {
+		index = Math.floor(Math.random() * newData.length)
+		newData.splice(index, 1)
+	}
+	return newData
+}
 
 // data = update(data, target);
 console.log(data.map(x => x[0]))
@@ -199,6 +221,7 @@ function buildModel(){
 }
 
 function trainModel(){
+	data = reduceDataSize(data)
 	model.fit(
 		tf.tensor(data.map(x => x[0])),
 		tf.oneHot(data.map(x => x[1]), 2),
@@ -347,7 +370,8 @@ function listen(predict) {
 								count += 1;
 							}
 						}
-					
+
+						correctSeqCount = count;
 						console.log(count)
 					}
 				}
