@@ -143,8 +143,9 @@ function altDistance(rec1, rec2) {
 			}
 		}
 	}
-
-	return (dist / numClaps)
+	// numClaps + 1 to prevent division by 0 so overall will be space between claps / (number of spaces + 2)
+	// so not exact mean, but effective enough for purpose
+	return (dist / (numClaps + 1))
 }
 
 
