@@ -63,14 +63,15 @@ function distance(rec1, rec2){
 	return dist
 }
 
-// alternative distance function which measures distances between successive claps and evaluates the  total distance
-// to be the sum of these smaller distances
+// alternative distance function which measures space between successive claps and evaluates the total distance
+// to be the mean of these spaces
 // if uneven number of claps, adds the position of each extra clap in recording
 function altDistance(rec1, rec2) {
 
 	var dist = 0;
 	var i = 0;
 	var j = 0;
+	var numClaps = 0;
 
 	var lastClapi = 0;
 	var lastClapj = 0;
@@ -85,6 +86,7 @@ function altDistance(rec1, rec2) {
 			j += 1;
 		}
 		else {
+			numClaps += 1
 			findingInitial = false;
 			lastClapi = i;
 			lastClapj = j;
@@ -105,6 +107,7 @@ function altDistance(rec1, rec2) {
 			j += 1
 		}
 		else {
+			numClaps += 1
 			dist += Math.abs((i - lastClapi) - (j - lastClapj));
 			lastClapi = i;
 			lastClapj = j;
@@ -141,7 +144,7 @@ function altDistance(rec1, rec2) {
 		}
 	}
 
-	return dist
+	return (dist / numClaps)
 }
 
 
@@ -159,7 +162,7 @@ function update(d, t){
 			newData.push(d[i])
 		}
 		*/
-		if(altDistance(t, d[i][0]) < 10){
+		if(altDistance(t, d[i][0]) < 3){
 			newData.push([d[i][0], 1]);
 		}
 		else{
