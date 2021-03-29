@@ -1,25 +1,34 @@
 // Model ----------------------------------------------------
 
 const recordingLength = 70;
-const clapLength = 3;
-const maxGapLength = 7;
+const minClapLength = 2;
+const maxClapLength = 4;
+const maxNumClaps = 10
+const N = 5000;
 
 var data = [];
-const N = 5000;
 
 // Generate Data
 
 var i;
 for(i = 0; i < N; i++){
-	var nextData = new Array(Math.floor(Math.random() * 20) + 10).fill(0);
+
+	// can have between 0 and maxNumClaps claps
+	var numClaps = Math.floor((i / Math.floor(N / maxNumClaps)));
 
 	var claps = 0;
-	
+
+	// initially have a period with no claps (leaving space for all the claps to occur)
+	var nextData = new Array(Math.floor(Math.random() * (recordingLength - numClaps * (maxClapLength + 1)))).fill(0);
+
 	// while(nextData.length < (recordingLength - clapLength)){
-	while(claps < 5){
-		nextData = nextData.concat(new Array(Math.floor(Math.random() * 3) + clapLength - 1).fill(1));
-		nextData = nextData.concat(new Array(Math.floor(Math.random() * maxGapLength) + 1).fill(0));
+	while(claps < numClaps){
+		// add a clap of correct length
+		nextData = nextData.concat(new Array(Math.floor(Math.random() * (maxClapLength - minClapLength + 1)) + minClapLength).fill(1));
 		claps += 1
+		// add a pause of arbitrary length (leaving enough space for the remaining claps)
+		var maxGapLength = Math.floor((recordingLength - nextData.length - ((numClaps - claps) * (maxClapLength + 1))));
+		nextData = nextData.concat(new Array(Math.floor(Math.random() * maxGapLength) + 1).fill(0));
 	}
 	
 	// console.log(nextData)
