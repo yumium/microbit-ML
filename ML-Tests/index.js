@@ -234,18 +234,20 @@ function trainModel(){
 			epochs: 5,
 			callbacks: {
 				onEpochEnd: (epoch, logs) => {
-				// document.querySelector('#console').textContent =
-				// 	`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`;
-				// }
+					// document.querySelector('#console').textContent =
+					// 	`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`;
+					// }
 
-				console.log(
-					`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`
-				)}
+					console.log(
+						`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`
+				)},
+				onBatchEnd: (epoch, logs) => {
+					console.log("done training")
+					// save model
+				}
 			}
 		}
 	);
-
-	console.log("done training")
 }
 
 // AUDIO -----------------------------------------------------
