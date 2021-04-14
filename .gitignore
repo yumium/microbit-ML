@@ -3,4 +3,8 @@ environment.yml
 
 # TensorFlow Lite test model files
 ML-Tests/*.cc
+ML-Tests/*.cpp
 ML-Tests/*.tflite
+
+# VSCode Configuration files
+.vscode

@@ -7,6 +7,7 @@
 import os, re, sys
 from functools import reduce
 
+# Constants
 COLS=12
 #Determine if the C language keyword
 ckeywords=("auto", "break", "case", "char", "const", "continue", "default","do", "double", "else", "enum", "extern", "float", "for","goto", "if", "int", "long", "register", "return", "short","signed", "static", "sizeof", "struct", "switch", "typedef", "union","unsigned", "void", "volatile", "while", "_bool") #_bool is a new c99 keyword
@@ -40,10 +41,13 @@ def xxdi(infile, outfile, carrayname):
         #"Break" the file contents into a byte array and convert each byte to hexadecimal form
         # SOURCE: https://stackoverflow.com/questions/11676864/how-can-i-format-an-integer-to-a-two-digit-hex
         content=list(map (lambda x: "0x{:02x}".format(x), content))
-        
+
     #Constructing array definition header and length variables
-    carrayheader="unsigned char %s[] = {"%carrayname
-    carraytailer="};\nunsigned int %s_len = %d;"%(carrayname, len (content))
+    carrayheader='''#include "model.h"
+                    
+// Keep model aligned to 8 bytes to guarantee aligned 64-bit accesses.
+alignas(8) const unsigned char %s[] = {'''%carrayname
+    carraytailer="};\nconst int %s_len = %d;"%(carrayname, len (content))
 
     #print will wrap automatically after each line of output
     if outfile is None:
@@ -63,6 +67,6 @@ def xxdi(infile, outfile, carrayname):
 
         
 if __name__ == "__main__":
-    xxdi(infile="model.tflite", outfile="model.cc", carrayname='g_model')
+    xxdi(infile="model.tflite", outfile="model.cpp", carrayname='g_model')
 
 #xxdi ()
