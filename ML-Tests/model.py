@@ -75,8 +75,10 @@ model.compile(
 
 print(np.array(tf.one_hot([d[1] for d in trainingData], 2))[:10].shape)
 
+x_train = np.array([d[0] for d in trainingData])
+
 history = model.fit(
-    np.array([d[0] for d in trainingData]), 
+    x_train, 
     np.array(tf.one_hot([d[1] for d in trainingData], 2, axis=-1)),
     batch_size=10, 
     epochs=5, 
@@ -91,3 +93,24 @@ print(prediction)
 
 prediction = model.predict(np.array([data[1][0]]))
 print(prediction, data[1][1])
+
+# Convert the model to the TensorFlow Lite format
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+# # Use quantization
+# def representative_dataset():
+#   for i in range(500):
+#     yield([x_train[i].reshape(1, 1)])
+# # Set the optimization flag.
+# converter.optimizations = [tf.lite.Optimize.DEFAULT]
+# # Enforce integer only quantization
+# converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+# converter.inference_input_type = tf.int8
+# converter.inference_output_type = tf.int8
+# # Provide a representative dataset to ensure we quantize correctly.
+# converter.representative_dataset = representative_dataset
+model_tflite = converter.convert()
+# raises error on M1 chip https://github.com/apple/tensorflow_macos/issues/133
+
+# # Save the model to disk
+open('model.tflite', "wb").write(model_tflite)
