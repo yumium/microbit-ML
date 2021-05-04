@@ -82,6 +82,7 @@ This contains the original files used to create the model. The python file `mode
 Other scripts in this directory are detailed below:
 * ***converter.py***: Python script which converts a TensorFlow Lite model in JSON format (along with a .bin file containing the model's weights) to a .tflite file; used in conjunction with *xxdi.py* to prepare the model output by TensorFlowJS for inference on the micro:bit
 * *label_image.py*: script used to run inference on a TFLite model in Python; used primarily for testing
+* *Running_TensorFlow_Lite.ipynb*: used to run the *converter.py* and *xxdi.py* scripts together for testing; includes a link to an equivalent Google Colab notebook that can be run in the browser
 * ***xxdi.py***: Python script which converts a TensorFlow Lite model in .tflite format to a C++ array of unsigned characters, which is compatible with the TensorFlow Lite build running on the micro:bit
 
 Scripts involved in the end-to-end pipeline are bolded; other scripts are used solely for testing.
