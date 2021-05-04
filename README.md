@@ -1,5 +1,46 @@
 # microbit-ML
-A proof of concept of teaching ML on the new micro:bit v2.
+A proof of concept of teaching ML on the new micro:bit v2. 
+
+This repository implements a simple clap pattern detection module in micropython, where a model can be trained for a specific clap pattern and inference can be done on the micro:bit. To use the module, simply import it in micropython.
+
+```
+>>> import clapdetector
++-xkcd.com/353---------------------------------------------------+
+|                                                                |
+|                                                    \0/         |
+|                                                  /   \         |
+|        You're clapping!                Machine Learning!       |
+|            Why?                                      \ \       |
+|            /                                                   |
+|          0                                                     |
+|         /|\                                                    |
+|          |                                                     |
+|-----____/_\______________________________----------------------|
+|                                                                |
++----------------------------------------------------------------+
+```
+Several methods are available for the module:
+
+`clapdetector.listen()`: Clap detector starts actively listening for claps
+
+`clapdetector.stop()`: Clap detector stops listening for claps
+
+`clapdetector.is_listening()`: Returns a boolean indicating whether the clap detector is listening for claps
+
+`clapdetector.was_detected()`: Returns if the clap pattern was detected since the last call to this function, and set the internal was_detected flag to *false*
+
+Here is a simple program that lets the micro:bit play a happy sound whenever it detects the clap pattern:
+
+```python
+import clapdetector
+
+clapdetector.listen()
+while True:
+    if clapdetector.was_detected():
+        audio.play(Sound.HAPPY)
+```
+
+---
 
 ### An overview of the directory
 
