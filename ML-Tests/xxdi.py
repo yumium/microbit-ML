@@ -67,6 +67,17 @@ alignas(8) const unsigned char %s[] = {'''%carrayname
 
         
 if __name__ == "__main__":
-    xxdi(infile="model.tflite", outfile="model.cpp", carrayname='g_model')
+    # Default parameters
+    infile="converted_model.tflite"
+    outfile="converted_model.cpp"
+
+    if len(sys.argv) > 1:
+        infile = sys.argv[1]
+        print("infile: "+infile)
+    if len(sys.argv) > 2:
+        outfile = sys.argv[2]
+        print("outfile: "+outfile)
+
+    xxdi(infile, outfile, carrayname='g_model')
 
 #xxdi ()

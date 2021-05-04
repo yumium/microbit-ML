@@ -1,7 +1,7 @@
 // Model ----------------------------------------------------
 
 const recordingLength = 70;
-const minClapLength = 2;
+const minClapLength = 1;
 const maxClapLength = 4;
 const maxNumClaps = 10
 const N = 50000;
@@ -200,7 +200,7 @@ console.log(data.map(x => x[0]))
 
 let model;
 
-function buildModel(){
+function buildModel(){ //creates nn with 
 	model = tf.sequential({
 		layers: [
 			tf.layers.dense({
@@ -215,6 +215,8 @@ function buildModel(){
 		]
 	});
 
+
+
 	model.compile({
 		optimizer: tf.train.adam(0.01),
 		loss: 'categoricalCrossentropy',
@@ -223,6 +225,14 @@ function buildModel(){
 	
 	console.log("done building")
 }
+
+async function saveModel(){ //Saves model in SavedModel (.json) format 
+	const saveResult = await model.save('downloads://my-model');
+
+	console.log("Sheesh");
+
+}
+
 
 function trainModel(){
 	data = reduceDataSize(data)
@@ -234,20 +244,18 @@ function trainModel(){
 			epochs: 5,
 			callbacks: {
 				onEpochEnd: (epoch, logs) => {
-					// document.querySelector('#console').textContent =
-					// 	`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`;
-					// }
+				// document.querySelector('#console').textContent =
+				// 	`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`;
+				// }
 
-					console.log(
-						`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`
-				)},
-				onBatchEnd: (epoch, logs) => {
-					console.log("done training")
-					// save model
-				}
+				console.log(
+					`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`
+				)}
 			}
 		}
 	);
+
+	console.log("done training!")
 }
 
 // AUDIO -----------------------------------------------------
