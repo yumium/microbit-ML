@@ -27,7 +27,7 @@ A proof of concept of teaching ML on the new micro:bit v2.
 
 Submodule directories are indicated in bold.
 
-No changes were made to the **codal-microbit-v2** subrepository, but it is included for reference.
+No changes were made to the **codal-microbit-v2** subrepository, but it is included for reference. Details regarding development within the other subrepositories are provided below.
 
 ---
 
@@ -77,14 +77,14 @@ In order to compile the C++ scripts comprising the TensorFlow library, the *CMak
 
 ### ML-Tests
 
-The functions included here are used primarily for development purposes. The scripts perform the following functionalities:
+This contains the original files used to create the model. The python file `model.py` contains the python version of the model in Tensorflow, which was then converted into a javascript version in `index.html` and `index.js`, which provide a browser based way to train and test a model.
+
+Other scripts in this directory are detailed below:
 * ***converter.py***: Python script which converts a TensorFlow Lite model in JSON format (along with a .bin file containing the model's weights) to a .tflite file; used in conjunction with *xxdi.py* to prepare the model output by TensorFlowJS for inference on the micro:bit
-* *index.html* and *index.js*: invoked to serve a minimal webpage used for recording audio and training the ML model
 * *label_image.py*: script used to run inference on a TFLite model in Python; used primarily for testing
-* *model.py*: deprecated, used to explore training of the TensorFlow model in Python
 * ***xxdi.py***: Python script which converts a TensorFlow Lite model in .tflite format to a C++ array of unsigned characters, which is compatible with the TensorFlow Lite build running on the micro:bit
 
-Scripts involved in the end-to-end pipeline are bolded; the other scripts were used solely for testing.
+Scripts involved in the end-to-end pipeline are bolded; other scripts are used solely for testing.
 
 ---
 
