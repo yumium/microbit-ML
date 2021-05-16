@@ -155,20 +155,20 @@ function update(d, t){
 	
 	for(var i = 0; i < d.length; i++){
 		//console.log(distance(t, d[i][0]))
-		/*
+		
 		if(distance(t, d[i][0]) < 15){
 			newData.push([d[i][0], 1]);
 		}
 		else{
 			newData.push(d[i])
 		}
-		*/
-		if(altDistance(t, d[i][0]) < 3){
-			newData.push([d[i][0], 1]);
-		}
-		else{
-			newData.push(d[i])
-		}
+		
+		// if(altDistance(t, d[i][0]) < 3){
+		// 	newData.push([d[i][0], 1]);
+		// }
+		// else{
+		// 	newData.push(d[i])
+		// }
 	}
 
 	return newData
@@ -234,9 +234,9 @@ function trainModel(){
 			epochs: 5,
 			callbacks: {
 				onEpochEnd: (epoch, logs) => {
-				// document.querySelector('#console').textContent =
-				// 	`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`;
-				// }
+				document.querySelector('#console').textContent =
+					`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`;
+			
 
 				console.log(
 					`Accuracy: ${(logs.acc * 100).toFixed(1)}% Epoch: ${epoch + 1}`
@@ -246,6 +246,7 @@ function trainModel(){
 	);
 
 	console.log("done training")
+	model.save('downloads://my-model')
 }
 
 // AUDIO -----------------------------------------------------
